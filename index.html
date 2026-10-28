@@ -7,45 +7,45 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
         body { background: #062319; color: #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
-        #game-container { width: 100%; max-width: 480px; height: 100vh; max-height: 850px; background: linear-gradient(135deg, #0a3a29 0%, #062319 100%); border: 3px solid #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); display: flex; flex-direction: column; position: relative; overflow: hidden; }
-        header { background: rgba(6, 35, 25, 0.95); border-bottom: 2px solid #d4af37; padding: 12px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        #game-container { width: 100%; max-width: 480px; height: 100vh; max-height: 850px; background: linear-gradient(135deg, #03a29 0%, #062319 100%); border: 3px solid #d4af37; border-radius: 16px; display: flex; flex-direction: column; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.8); }
+        header { background: rgba(6, 35, 25, 0.95); border-bottom: 2px solid #d4af37; padding: 12px; display: flex; justify-content: space-around; align-items: center; border-top-left-radius: 13px; border-top-right-radius: 13px; }
         .stat-box { font-size: 14px; font-weight: bold; color: #d4af37; text-shadow: 1px 1px 2px #000; }
-        #canvas-wrap { flex: 1; position: relative; background: #03150f; cursor: crosshair; }
+        #canvas-wrap { flex: 1; position: relative; background: #03150f; cursor: crosshair; overflow: hidden; }
         canvas { display: block; width: 100%; height: 100%; }
-        footer { background: rgba(6, 35, 25, 0.95); border-top: 2px solid #d4af37; padding: 10px; display: flex; justify-content: space-around; z-index: 10; }
-        .btn-upgrade { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 8px 12px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        footer { background: rgba(6, 35, 25, 0.95); border-top: 2px solid #d4af37; padding: 12px; display: flex; justify-content: space-around; align-items: center; border-bottom-left-radius: 13px; border-bottom-right-radius: 13px; }
+        .btn-upgrade { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 8px 12px; font-weight: bold; font-size: 12px; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); transition: 0.2s; }
         .btn-upgrade:active { transform: scale(0.95); }
-        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 35, 25, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; text-align: center; padding: 20px; }
-        h1 { font-size: 24px; margin-bottom: 15px; color: #d4af37; text-shadow: 2px 2px 4px #000; }
-        p { font-size: 14px; margin-bottom: 25px; line-height: 1.6; color: #e0e0e0; }
-        .btn-start { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+        #start-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(3, 21, 15, 0.92); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10; text-align: center; padding: 20px; }
+        #start-overlay h1 { font-size: 28px; color: #d4af37; margin-bottom: 10px; text-shadow: 0 2px 5px rgba(0,0,0,0.8); }
+        #start-overlay p { font-size: 14px; color: #a3915b; margin-bottom: 20px; line-height: 1.6; }
+        .btn-start { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 10px; cursor: pointer; box-shadow: 0 5px 15px rgba(212,175,55,0.4); }
     </style>
 </head>
 <body>
     <div id="game-container">
         <header>
             <div class="stat-box">🛡️ دژ: <span id="castle-hp">100</span></div>
-            <div class="stat-box">💰 طلا: <span id="gold">50</span></div>
+            <div class="stat-box">🪙 طلا: <span id="gold">50</span></div>
             <div class="stat-box">⚔️ موج: <span id="wave">1</span></div>
         </header>
         <div id="canvas-wrap">
-            <canvas id="gameCanvas"></canvas>
-            <div id="start-screen">
+            <div id="start-overlay">
                 <h1>مدافع دژ: نبرد بی‌پایان</h1>
-                <p>با تیراندازی دقیق، مهاجمان را نابود کنید و از دژ مقدس دفاع کنید. طلا کسب کنید و قابلیت‌های دفاعی خود را ارتقا دهید.</p>
-                <button class="btn-start" onclick="startGame()">شروع نبرد</button>
+                <p>دروازه‌های قلعه را در برابر هجوم سپاهیان تاریکی حفظ کنید. تیراندازان و جادوگران را ارتقا دهید.</p>
+                <button class="btn-start" onclick="startGame()">شروع نبرد حماسی</button>
             </div>
+            <canvas id="gameCanvas"></canvas>
         </div>
         <footer>
-            <button class="btn-upgrade" onclick="upgradeBow()">تیروکمان (هزینه: <span id="cost-bow">30</span>)</button>
-            <button class="btn-upgrade" onclick="upgradeWall()">استحکام دژ (هزینه: <span id="cost-wall">50</span>)</button>
+            <button class="btn-upgrade" onclick="upgradeArcher()">تیرانداز (+25 طلا)</button>
+            <button class="btn-upgrade" onclick="upgradeMage()">جادوگر (+40 طلا)</button>
+            <button class="btn-upgrade" onclick="repairCastle()">تعمیر دژ (+30 طلا)</button>
         </footer>
     </div>
 
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
-        
         function resizeCanvas() {
             canvas.width = canvas.parentElement.clientWidth;
             canvas.height = canvas.parentElement.clientHeight;
@@ -53,158 +53,115 @@
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
 
-        let gameState = {
-            hp: 100,
-            maxHp: 100,
-            gold: 50,
-            wave: 1,
-            bowLevel: 1,
-            bowCost: 30,
-            wallCost: 50,
-            isPlaying: false
-        };
-
+        let gameRunning = false;
+        let castleHP = 100;
+        let gold = 50;
+        let wave = 1;
+        let archerLevel = 1;
+        let mageLevel = 1;
         let enemies = [];
+        let particles = [];
         let projectiles = [];
-        let enemySpawnTimer = 0;
 
         function startGame() {
-            document.getElementById('start-screen').style.display = 'none';
-            gameState.isPlaying = true;
+            document.getElementById('start-overlay').style.display = 'none';
+            gameRunning = true;
             loop();
         }
 
+        function spawnEnemy() {
+            if(Math.random() < 0.03 + (wave * 0.005)) {
+                enemies.push({
+                    x: canvas.width + 30,
+                    y: canvas.height * 0.55 + Math.random() * (canvas.height * 0.35),
+                    speed: 0.8 + wave * 0.1,
+                    hp: 20 + wave * 10,
+                    maxHp: 20 + wave * 10,
+                    radius: 14
+                });
+            }
+        }
+
         canvas.addEventListener('click', (e) => {
-            if (!gameState.isPlaying) return;
+            if(!gameRunning) return;
             const rect = canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
             const y = e.clientY - rect.top;
-
-            // شلیک تیر به سمت محل کلیک
-            projectiles.push({
-                x: canvas.width / 2,
-                y: canvas.height - 120,
-                targetX: x,
-                targetY: y,
-                speed: 12,
-                damage: 25 * gameState.bowLevel
-            });
+            
+            // تیراندازی دستی بازیکن
+            projectiles.push({ x: 60, y: canvas.height * 0.6, tx: x, ty: y, speed: 12, color: '#d4af37' });
         });
 
-        function upgradeBow() {
-            if (gameState.gold >= gameState.bowCost) {
-                gameState.gold -= gameState.bowCost;
-                gameState.bowLevel++;
-                gameState.bowCost = Math.floor(gameState.bowCost * 1.5);
-                updateUI();
-            }
-        }
-
-        function upgradeWall() {
-            if (gameState.gold >= gameState.wallCost) {
-                gameState.gold -= gameState.wallCost;
-                gameState.maxHp += 50;
-                gameState.hp = gameState.maxHp;
-                gameState.wallCost = Math.floor(gameState.wallCost * 1.6);
-                updateUI();
-            }
-        }
-
-        function updateUI() {
-            document.getElementById('castle-hp').innerText = gameState.hp;
-            document.getElementById('gold').innerText = gameState.gold;
-            document.getElementById('wave').innerText = gameState.wave;
-            document.getElementById('cost-bow').innerText = gameState.bowCost;
-            document.getElementById('cost-wall').innerText = gameState.wallCost;
-        }
-
-        function spawnEnemy() {
-            enemies.push({
-                x: Math.random() * (canvas.width - 60) + 30,
-                y: -30,
-                radius: 18,
-                speed: 1 + gameState.wave * 0.2,
-                hp: 40 + gameState.wave * 15,
-                maxHp: 40 + gameState.wave * 15
-            });
-        }
-
         function update() {
-            if (!gameState.isPlaying) return;
+            if(!gameRunning) return;
+            spawnEnemy();
 
-            enemySpawnTimer++;
-            if (enemySpawnTimer > Math.max(30, 90 - gameState.wave * 5)) {
-                spawnEnemy();
-                enemySpawnTimer = 0;
+            // حرکت دشمنان
+            for(let i = enemies.length - 1; i >= 0; i--) {
+                let en = enemies[i];
+                en.x -= en.speed;
+                if(en.x < 70) {
+                    castleHP -= 10;
+                    enemies.splice(i, 1);
+                    document.getElementById('castle-hp').innerText = Math.max(0, castleHP);
+                    if(castleHP <= 0) {
+                        gameRunning = false;
+                        alert('دژ سقوط کرد! موج کسب شده: ' + wave);
+                        location.reload();
+                    }
+                }
             }
 
-            // حرکت پروژکتیل‌ها
-            for (let i = projectiles.length - 1; i >= 0; i--) {
+            // مدیریت پرتابه‌ها
+            for(let i = projectiles.length - 1; i >= 0; i--) {
                 let p = projectiles[i];
-                let dx = p.targetX - p.x;
-                let dy = p.targetY - p.y;
+                let dx = p.tx - p.x;
+                let dy = p.ty - p.y;
                 let dist = Math.hypot(dx, dy);
-                if (dist < p.speed) {
-                    // برخورد تیر
-                    for (let j = enemies.length - 1; j >= 0; j--) {
-                        let en = enemies[j];
-                        if (Math.hypot(en.x - p.targetX, en.y - p.targetY) < en.radius + 10) {
-                            en.hp -= p.damage;
-                            if (en.hp <= 0) {
-                                enemies.splice(j, 1);
-                                gameState.gold += 15;
-                                if (Math.random() < 0.1) gameState.wave++;
+                if(dist < 10) {
+                    // برخورد
+                    enemies.forEach((en, ei) => {
+                        if(Math.hypot(en.x - p.tx, en.y - p.ty) < 30) {
+                            en.hp -= (10 * archerLevel);
+                            if(en.hp <= 0) {
+                                enemies.splice(ei, 1);
+                                gold += 15;
+                                document.getElementById('gold').innerText = gold;
                             }
                         }
-                    }
+                    });
                     projectiles.splice(i, 1);
                 } else {
                     p.x += (dx / dist) * p.speed;
                     p.y += (dy / dist) * p.speed;
                 }
             }
-
-            // حرکت دشمنان
-            for (let i = enemies.length - 1; i >= 0; i--) {
-                let en = enemies[i];
-                en.y += en.speed;
-                // رسیدن به دژ
-                if (en.y > canvas.height - 100) {
-                    gameState.hp -= 10;
-                    enemies.splice(i, 1);
-                    if (gameState.hp <= 0) {
-                        gameState.hp = 0;
-                        gameState.isPlaying = false;
-                        alert('دژ سقوط کرد! بازی به پایان رسید.');
-                        location.reload();
-                    }
-                }
-            }
-            updateUI();
         }
 
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // ترسیم پس‌زمینه و دژ
-            ctx.fillStyle = '#062d20';
-            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
-            ctx.fillStyle = '#d4af37';
-            ctx.font = 'bold 16px Tahoma';
-            ctx.textAlign = 'center';
-            ctx.fillText('🏰 حصار دژ مقدس', canvas.width / 2, canvas.height - 45);
+            // پس‌زمینه آسمان و افق
+            let grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            grad.addColorStop(0, '#03150f');
+            grad.addColorStop(0.5, '#062319');
+            grad.addColorStop(1, '#0b3829');
+            ctx.fillStyle = grad;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // ترسیم تیرها
+            // ترسیم قلعه (سمت چپ)
+            ctx.fillStyle = '#14382b';
+            ctx.fillRect(0, canvas.height * 0.45, 70, canvas.height * 0.55);
             ctx.fillStyle = '#d4af37';
-            projectiles.forEach(p => {
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
-                ctx.fill();
-            });
+            ctx.fillRect(60, canvas.height * 0.45, 10, canvas.height * 0.55);
+            // پرچم و تاج قلعه
+            ctx.beginPath();
+            ctx.arc(35, canvas.height * 0.45, 25, 0, Math.PI, true);
+            ctx.fill();
 
-            // ترسیم دشمنان
+            // ترسیم دشمنان (ارک‌ها / مهاجمان)
             enemies.forEach(en => {
-                ctx.fillStyle = '#b33939';
+                ctx.fillStyle = '#8b0000';
                 ctx.beginPath();
                 ctx.arc(en.x, en.y, en.radius, 0, Math.PI * 2);
                 ctx.fill();
@@ -212,18 +169,57 @@
                 ctx.lineWidth = 2;
                 ctx.stroke();
 
-                // نوار جان دشمن
+                // نوار سلامتی دشمن
                 ctx.fillStyle = '#000';
-                ctx.fillRect(en.x - 20, en.y - 28, 40, 6);
-                ctx.fillStyle = '#2ecc71';
-                ctx.fillRect(en.x - 20, en.y - 28, 40 * (en.hp / en.maxHp), 6);
+                ctx.fillRect(en.x - 15, en.y - 22, 30, 4);
+                ctx.fillStyle = '#00ff00';
+                ctx.fillRect(en.x - 15, en.y - 22, (en.hp / en.maxHp) * 30, 4);
+            });
+
+            // ترسیم تیرها
+            projectiles.forEach(p => {
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
             });
         }
 
         function loop() {
             update();
             draw();
-            if (gameState.isPlaying) requestAnimationFrame(loop);
+            if(gameRunning) requestAnimationFrame(loop);
+        }
+
+        function upgradeArcher() {
+            let cost = archerLevel * 25;
+            if(gold >= cost) {
+                gold -= cost;
+                archerLevel++;
+                document.getElementById('gold').innerText = gold;
+            } else {
+                alert('طلای کافی ندارید!');
+            }
+        }
+        function upgradeMage() {
+            let cost = mageLevel * 40;
+            if(gold >= cost) {
+                gold -= cost;
+                mageLevel++;
+                document.getElementById('gold').innerText = gold;
+            } else {
+                alert('طلای کافی ندارید!');
+            }
+        }
+        function repairCastle() {
+            if(gold >= 30) {
+                gold -= 30;
+                castleHP = Math.min(100, castleHP + 25);
+                document.getElementById('gold').innerText = gold;
+                document.getElementById('castle-hp').innerText = castleHP;
+            } else {
+                alert('طلای کافی ندارید!');
+            }
         }
     </script>
 </body>
