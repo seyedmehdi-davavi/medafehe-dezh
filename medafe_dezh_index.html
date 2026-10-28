@@ -1,6 +1,230 @@
-<!doctype html><html lang="fa" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"><meta name="theme-color" content="#101525"><title>مدافع دژ: نبرد بی‌پایان</title><style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap');
-:root{--bg:#101525;--panel:#1a2034;--gold:#f5c76b;--muted:#aab1c5;--line:#ffffff19}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#34405e,#101525 65%);color:#f7f3e9;font-family:Vazirmatn,Tahoma,sans-serif;min-height:100dvh;display:grid;place-items:center;padding:12px}.app{width:min(100%,980px);display:grid;gap:12px}.head,.hud,.abilities,.foot{background:#1a2034eF;border:1px solid var(--line);border-radius:18px;padding:12px 16px;box-shadow:0 10px 32px #0003}.head{display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{display:flex;align-items:center;gap:10px}.crest{font-size:29px;filter:drop-shadow(0 3px 6px #f5c76b55)}h1{font-size:clamp(16px,3vw,23px);margin:0}.sub{font-size:12px;color:var(--muted)}button{font:inherit;color:inherit;cursor:pointer;border:1px solid var(--line);background:#ffffff0a;border-radius:12px;padding:9px 12px;touch-action:manipulation}button:active{transform:scale(.97)}.sound{font-size:19px;padding:8px 12px}.hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.stat{background:#ffffff07;padding:9px 12px;border-radius:12px;min-width:0}.label{font-size:11px;color:var(--muted)}.value{font-weight:800;font-size:18px}.health{height:7px;border-radius:9px;background:#ffffff17;margin-top:5px;overflow:hidden}.health i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#ef6671,#f7c367);transition:width .2s}.arena{position:relative;border:1px solid #ffffff20;border-radius:20px;overflow:hidden;background:#121a22;box-shadow:0 16px 44px #0006;touch-action:none}canvas{display:block;width:100%;height:min(54vh,510px);min-height:290px;touch-action:none}.message{position:absolute;inset:0;display:grid;place-items:center;background:#0b101bc9;padding:18px;text-align:center}.message.hidden{display:none}.card{max-width:430px;background:#1a2034f2;border:1px solid #ffffff25;border-radius:22px;padding:24px;box-shadow:0 20px 50px #0008}.card h2{margin:0 0 8px;color:var(--gold)}.card p{line-height:1.9;color:#d6d9e2;font-size:14px}.primary{background:linear-gradient(135deg,#f4cf7d,#d89943);color:#282012;font-weight:800;border:0;padding:11px 25px}.abilities{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:10px}.ability{display:flex;align-items:center;text-align:right;gap:10px;min-height:62px;background:#ffffff08}.ability .icon{font-size:24px}.ability strong{display:block;font-size:13px}.ability small{color:var(--muted);font-size:10px}.ability.cool{opacity:.52}.foot{text-align:center;color:var(--muted);font-size:11px;padding:8px}.toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);border-radius:20px;background:#101525dc;padding:7px 14px;font-size:12px;pointer-events:none;white-space:nowrap;opacity:0;transition:opacity .2s}.toast.show{opacity:1}@media(max-width:560px){body{padding:8px}.app{gap:8px}.head{padding:10px 12px}.hud{padding:8px;gap:6px}.stat{padding:7px}.value{font-size:16px}.abilities{gap:6px;padding:7px}.ability{display:grid;justify-items:center;text-align:center;padding:7px 3px;gap:2px}.ability strong{font-size:11px}.ability small{font-size:9px}.ability .icon{font-size:21px}canvas{height:51vh;min-height:280px}}
-</style></head><body><main class="app"><header class="head"><div class="brand"><div class="crest">🏰</div><div><h1>مدافع دژ: نبرد بی‌پایان</h1><div class="sub">نگذار سایه‌ها به قلعه برسند</div></div></div><button class="sound" id="sound" aria-label="صدا">🔊</button></header><section class="hud"><div class="stat"><div class="label">امتیاز</div><div class="value" id="score">۰</div></div><div class="stat"><div class="label">موج دشمن</div><div class="value" id="wave">۱</div></div><div class="stat"><div class="label">سلامت قلعه</div><div class="value" id="hptext">۱۰۰٪</div><div class="health"><i id="hpbar"></i></div></div><div class="stat"><div class="label">بهترین رکورد</div><div class="value" id="best">۰</div></div></section><section class="arena"><canvas id="game" aria-label="میدان نبرد"></canvas><div class="toast" id="toast"></div><div class="message" id="overlay"><div class="card"><div style="font-size:45px">🛡️</div><h2 id="title">از دژ دفاع کن!</h2><p id="description">برای شلیک، روی دشمنان لمس کن. آرچر را برای تیر خودکار فعال کن، گلولهٔ آتشین را روی گروه دشمنان بزن و دیوار قلعه را ترمیم کن.</p><button class="primary" id="start">شروع نبرد</button><div class="sub" style="margin-top:10px">بازی آفلاین · لمس یا کلیک · ذخیرهٔ رکورد روی همین دستگاه</div></div></div></section><section class="abilities"><button class="ability" id="archer"><span class="icon">🏹</span><span><strong>تیرانداز آرچر</strong><small>تیر خودکار · ۸ ثانیه</small></span></button><button class="ability" id="fire"><span class="icon">🔥</span><span><strong>گلوله آتشین ماگ</strong><small>لمس میدان برای انفجار</small></span></button><button class="ability" id="repair"><span class="icon">🧱</span><span><strong>ترمیم دیوار قلعه</strong><small>بازیابی ۳۰٪ سلامتی</small></span></button></section><footer class="foot">برای نشانه‌گیری روی دشمنان بزن؛ در رایانه کلیدهای ۱، ۲ و ۳ هم توانایی‌ها را فعال می‌کنند.</footer></main><script>
-(()=>{'use strict';const c=document.querySelector('#game'),ctx=c.getContext('2d'),$=s=>document.querySelector(s),overlay=$('#overlay');let W=0,H=0,dpr=1,playing=false,score=0,wave=1,hp=100,enemies=[],shots=[],particles=[],last=0,spawn=0,archer=0,fireTarget=null,audio=true,ac=null,toastTimer=0,best=+(localStorage.getItem('fortress_best')||0);$('#best').textContent=fmt(best);function fmt(n){return Math.floor(n).toLocaleString('fa-IR')}function resize(){let r=c.getBoundingClientRect();dpr=Math.min(devicePixelRatio||1,2);W=r.width;H=r.height;c.width=W*dpr;c.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}new ResizeObserver(resize).observe(c);resize();function sound(f=440,d=.08,type='sine',vol=.035){if(!audio)return;try{ac??=new(window.AudioContext||window.webkitAudioContext)();if(ac.state==='suspended')ac.resume();let o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.value=f;g.gain.setValueAtTime(vol,ac.currentTime);g.gain.exponentialRampToValueAtTime(.001,ac.currentTime+d);o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}function msg(t){let el=$('#toast');el.textContent=t;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),1300)}function updateHud(){$('#score').textContent=fmt(score);$('#wave').textContent=fmt(wave);$('#hptext').textContent=fmt(hp)+'٪';$('#hpbar').style.width=hp+'%';$('#hpbar').style.background=hp<35?'#f45d68':'linear-gradient(90deg,#ef6671,#f7c367)'}function start(){score=0;wave=1;hp=100;enemies=[];shots=[];particles=[];spawn=0;archer=0;playing=true;overlay.classList.add('hidden');last=performance.now();sound(660,.12,'triangle');requestAnimationFrame(loop);updateHud()}$('#start').onclick=start;$('#sound').onclick=()=>{$('#sound').textContent=audio?'🔇':'🔊';audio=!audio;if(audio)sound(500)};function enemy(){let x=28+Math.random()*(W-56),r=12+Math.random()*5;enemies.push({x,y:-r,r,hp:1+Math.floor(wave/4),max:1+Math.floor(wave/4),speed:24+wave*3+Math.random()*14,phase:Math.random()*7,type:Math.random()<.2?'👹':'👾'})}function particle(x,y,color,n=8){for(let i=0;i<n;i++){let a=Math.random()*Math.PI*2,v=25+Math.random()*100;particles.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v,life:.35+Math.random()*.55,color})}}function kill(e){score+=10+wave*2;particle(e.x,e.y,'#ffbb66',10);sound(250,.07,'triangle',.025);if(score>best){best=score;localStorage.setItem('fortress_best',best)}updateHud()}function hit(x,y,damage=1,radius=30){let found=enemies.filter(e=>Math.hypot(e.x-x,e.y-y)<radius+e.r);for(let e of found){e.hp-=damage;if(e.hp<=0){enemies.splice(enemies.indexOf(e),1);kill(e)}else particle(e.x,e.y,'#ff9e56',4)}if(!found.length){particle(x,y,'#ffd470',5);sound(180,.06,'sine',.018)}else sound(120,.14,'sawtooth',.03)}function pos(ev){let r=c.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top}}c.addEventListener('pointerdown',e=>{if(!playing)return;let p=pos(e);if(fireTarget){hit(p.x,p.y,99,95);fireTarget=false;$('#fire').classList.remove('cool');return}hit(p.x,p.y,1,27)});$('#archer').onclick=()=>{if(!playing)return msg('اول نبرد را آغاز کن');archer=8;$('#archer').classList.add('cool');msg('آرچر وارد میدان شد!');sound(780,.13,'triangle')};$('#fire').onclick=()=>{if(!playing)return msg('اول نبرد را آغاز کن');fireTarget=true;$('#fire').classList.add('cool');msg('نقطهٔ هدف را لمس کن');sound(330,.1,'sawtooth')};$('#repair').onclick=()=>{if(!playing)return msg('اول نبرد را آغاز کن');if(hp>=100)return msg('سلامتی قلعه کامل است');hp=Math.min(100,hp+30);particle(W-70,H-46,'#7fffc0',18);sound(620,.24,'sine');updateHud();msg('دیوار قلعه ترمیم شد')};window.addEventListener('keydown',e=>{if(e.key==='1')$('#archer').click();if(e.key==='2')$('#fire').click();if(e.key==='3')$('#repair').click();if(e.key===' '&& !playing)start()});function draw(dt){ctx.clearRect(0,0,W,H);let sky=ctx.createLinearGradient(0,0,0,H);sky.addColorStop(0,'#182838');sky.addColorStop(.68,'#283a35');sky.addColorStop(1,'#574535');ctx.fillStyle=sky;ctx.fillRect(0,0,W,H);ctx.fillStyle='#d6c786';ctx.globalAlpha=.22;for(let i=0;i<18;i++){let x=(i*137+20)%W,y=(i*71+35)%(H*.66);ctx.beginPath();ctx.arc(x,y,1.2,0,7);ctx.fill()}ctx.globalAlpha=1;let ground=H-47;ctx.fillStyle='#324237';ctx.fillRect(0,ground,W,H-ground);ctx.fillStyle='#73563e';ctx.fillRect(0,ground+9,W,H-ground);for(let x=12;x<W;x+=48){ctx.fillStyle='#4e6850';ctx.beginPath();ctx.ellipse(x,ground+3,12,4,0,0,7);ctx.fill()}drawCastle(ground);for(const e of enemies){e.phase+=dt*5;ctx.save();ctx.translate(e.x,e.y+Math.sin(e.phase)*2);ctx.font=`${e.r*2}px serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(e.type,0,0);ctx.fillStyle='#1b1517';ctx.fillRect(-e.r,-e.r-8,e.r*2,4);ctx.fillStyle='#ff6868';ctx.fillRect(-e.r,-e.r-8,e.r*2*Math.max(0,e.hp/e.max),4);ctx.restore()}for(const s of shots){ctx.strokeStyle='#ffd77e';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(s.x,s.y);ctx.lineTo(s.tx,s.ty);ctx.stroke();ctx.fillStyle='#fff2b0';ctx.beginPath();ctx.arc(s.tx,s.ty,3,0,7);ctx.fill()}for(let i=particles.length-1;i>=0;i--){let p=particles[i];p.life-=dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=45*dt;if(p.life<=0){particles.splice(i,1);continue}ctx.globalAlpha=Math.min(1,p.life*2);ctx.fillStyle=p.color;ctx.beginPath();ctx.arc(p.x,p.y,3,0,7);ctx.fill()}ctx.globalAlpha=1;if(archer>0){archer-=dt;if(Math.random()<dt*2.3&&enemies.length){let e=enemies.reduce((a,b)=>a.y>b.y?a:b);shots.push({x:W-83,y:ground-55,tx:e.x,ty:e.y,life:.12});hit(e.x,e.y,1,12)}if(archer<=0)$('#archer').classList.remove('cool')}}function drawCastle(y){let x=W-100;ctx.fillStyle='#bba77c';ctx.fillRect(x,y-63,80,63);ctx.fillStyle='#d9c79b';ctx.fillRect(x-7,y-70,23,13);ctx.fillRect(x+26,y-82,22,25);ctx.fillRect(x+61,y-70,23,13);ctx.fillStyle='#463b34';ctx.fillRect(x+31,y-31,18,31);ctx.fillStyle='#f3ce77';ctx.beginPath();ctx.arc(x+40,y-42,5,0,7);ctx.fill();ctx.fillStyle='#d8c99b';ctx.fillRect(x+34,y-56,12,2);ctx.fillRect(x+39,y-61,2,12);ctx.fillStyle='#c84949';ctx.beginPath();ctx.moveTo(x+37,y-83);ctx.lineTo(x+57,y-76);ctx.lineTo(x+37,y-72);ctx.fill();ctx.fillStyle='#fff';ctx.font='11px Vazirmatn';ctx.textAlign='center';ctx.fillText('دژ',x+40,y+17)}function loop(t){if(!playing)return;let dt=Math.min((t-last)/1000,.04);last=t;spawn+=dt;if(spawn>Math.max(.34,1.25-wave*.055)){spawn=0;enemy()}if(score>=wave*100){wave++;msg('موج '+fmt(wave)+' آغاز شد!');sound(540,.15,'triangle')}let ground=H-47;for(let i=enemies.length-1;i>=0;i--){let e=enemies[i];e.y+=e.speed*dt;if(e.y+e.r>ground-3){enemies.splice(i,1);hp=Math.max(0,hp-10);sound(90,.24,'square',.04);particle(W-70,ground-20,'#ff5252',13);updateHud();if(hp<=0){gameover();return}}}for(let i=shots.length-1;i>=0;i--){shots[i].life-=dt;if(shots[i].life<=0)shots.splice(i,1)}draw(dt);requestAnimationFrame(loop)}function gameover(){playing=false;$('#title').textContent='دژ سقوط کرد!';$('#description').innerHTML=`امتیاز نهایی: <b>${fmt(score)}</b><br>تا موج <b>${fmt(wave)}</b> دوام آوردی. دوباره تلاش کن و رکوردت را بشکن!`;$('#start').textContent='دوباره بازی کن';overlay.classList.remove('hidden');sound(110,.5,'sawtooth',.05)}updateHud();})();
-</script></body></html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مدافع دژ: نبرد بی‌پایان</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+        body { background: #062319; color: #d4af37; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; overflow: hidden; }
+        #game-container { width: 100%; max-width: 480px; height: 100vh; max-height: 850px; background: linear-gradient(135deg, #0a3a29 0%, #062319 100%); border: 3px solid #d4af37; box-shadow: 0 0 20px rgba(212, 175, 55, 0.4); display: flex; flex-direction: column; position: relative; overflow: hidden; }
+        header { background: rgba(6, 35, 25, 0.95); border-bottom: 2px solid #d4af37; padding: 12px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .stat-box { font-size: 14px; font-weight: bold; color: #d4af37; text-shadow: 1px 1px 2px #000; }
+        #canvas-wrap { flex: 1; position: relative; background: #03150f; cursor: crosshair; }
+        canvas { display: block; width: 100%; height: 100%; }
+        footer { background: rgba(6, 35, 25, 0.95); border-top: 2px solid #d4af37; padding: 10px; display: flex; justify-content: space-around; z-index: 10; }
+        .btn-upgrade { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 8px 12px; font-weight: bold; border-radius: 6px; cursor: pointer; font-size: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.3); transition: 0.2s; }
+        .btn-upgrade:active { transform: scale(0.95); }
+        #start-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(6, 35, 25, 0.95); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 20; text-align: center; padding: 20px; }
+        h1 { font-size: 24px; margin-bottom: 15px; color: #d4af37; text-shadow: 2px 2px 4px #000; }
+        p { font-size: 14px; margin-bottom: 25px; line-height: 1.6; color: #e0e0e0; }
+        .btn-start { background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 100%); color: #062319; border: none; padding: 12px 30px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.5); }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <div class="stat-box">🛡️ دژ: <span id="castle-hp">100</span></div>
+            <div class="stat-box">💰 طلا: <span id="gold">50</span></div>
+            <div class="stat-box">⚔️ موج: <span id="wave">1</span></div>
+        </header>
+        <div id="canvas-wrap">
+            <canvas id="gameCanvas"></canvas>
+            <div id="start-screen">
+                <h1>مدافع دژ: نبرد بی‌پایان</h1>
+                <p>با تیراندازی دقیق، مهاجمان را نابود کنید و از دژ مقدس دفاع کنید. طلا کسب کنید و قابلیت‌های دفاعی خود را ارتقا دهید.</p>
+                <button class="btn-start" onclick="startGame()">شروع نبرد</button>
+            </div>
+        </div>
+        <footer>
+            <button class="btn-upgrade" onclick="upgradeBow()">تیروکمان (هزینه: <span id="cost-bow">30</span>)</button>
+            <button class="btn-upgrade" onclick="upgradeWall()">استحکام دژ (هزینه: <span id="cost-wall">50</span>)</button>
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        let gameState = {
+            hp: 100,
+            maxHp: 100,
+            gold: 50,
+            wave: 1,
+            bowLevel: 1,
+            bowCost: 30,
+            wallCost: 50,
+            isPlaying: false
+        };
+
+        let enemies = [];
+        let projectiles = [];
+        let enemySpawnTimer = 0;
+
+        function startGame() {
+            document.getElementById('start-screen').style.display = 'none';
+            gameState.isPlaying = true;
+            loop();
+        }
+
+        canvas.addEventListener('click', (e) => {
+            if (!gameState.isPlaying) return;
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            // شلیک تیر به سمت محل کلیک
+            projectiles.push({
+                x: canvas.width / 2,
+                y: canvas.height - 120,
+                targetX: x,
+                targetY: y,
+                speed: 12,
+                damage: 25 * gameState.bowLevel
+            });
+        });
+
+        function upgradeBow() {
+            if (gameState.gold >= gameState.bowCost) {
+                gameState.gold -= gameState.bowCost;
+                gameState.bowLevel++;
+                gameState.bowCost = Math.floor(gameState.bowCost * 1.5);
+                updateUI();
+            }
+        }
+
+        function upgradeWall() {
+            if (gameState.gold >= gameState.wallCost) {
+                gameState.gold -= gameState.wallCost;
+                gameState.maxHp += 50;
+                gameState.hp = gameState.maxHp;
+                gameState.wallCost = Math.floor(gameState.wallCost * 1.6);
+                updateUI();
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('castle-hp').innerText = gameState.hp;
+            document.getElementById('gold').innerText = gameState.gold;
+            document.getElementById('wave').innerText = gameState.wave;
+            document.getElementById('cost-bow').innerText = gameState.bowCost;
+            document.getElementById('cost-wall').innerText = gameState.wallCost;
+        }
+
+        function spawnEnemy() {
+            enemies.push({
+                x: Math.random() * (canvas.width - 60) + 30,
+                y: -30,
+                radius: 18,
+                speed: 1 + gameState.wave * 0.2,
+                hp: 40 + gameState.wave * 15,
+                maxHp: 40 + gameState.wave * 15
+            });
+        }
+
+        function update() {
+            if (!gameState.isPlaying) return;
+
+            enemySpawnTimer++;
+            if (enemySpawnTimer > Math.max(30, 90 - gameState.wave * 5)) {
+                spawnEnemy();
+                enemySpawnTimer = 0;
+            }
+
+            // حرکت پروژکتیل‌ها
+            for (let i = projectiles.length - 1; i >= 0; i--) {
+                let p = projectiles[i];
+                let dx = p.targetX - p.x;
+                let dy = p.targetY - p.y;
+                let dist = Math.hypot(dx, dy);
+                if (dist < p.speed) {
+                    // برخورد تیر
+                    for (let j = enemies.length - 1; j >= 0; j--) {
+                        let en = enemies[j];
+                        if (Math.hypot(en.x - p.targetX, en.y - p.targetY) < en.radius + 10) {
+                            en.hp -= p.damage;
+                            if (en.hp <= 0) {
+                                enemies.splice(j, 1);
+                                gameState.gold += 15;
+                                if (Math.random() < 0.1) gameState.wave++;
+                            }
+                        }
+                    }
+                    projectiles.splice(i, 1);
+                } else {
+                    p.x += (dx / dist) * p.speed;
+                    p.y += (dy / dist) * p.speed;
+                }
+            }
+
+            // حرکت دشمنان
+            for (let i = enemies.length - 1; i >= 0; i--) {
+                let en = enemies[i];
+                en.y += en.speed;
+                // رسیدن به دژ
+                if (en.y > canvas.height - 100) {
+                    gameState.hp -= 10;
+                    enemies.splice(i, 1);
+                    if (gameState.hp <= 0) {
+                        gameState.hp = 0;
+                        gameState.isPlaying = false;
+                        alert('دژ سقوط کرد! بازی به پایان رسید.');
+                        location.reload();
+                    }
+                }
+            }
+            updateUI();
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // ترسیم پس‌زمینه و دژ
+            ctx.fillStyle = '#062d20';
+            ctx.fillRect(0, canvas.height - 100, canvas.width, 100);
+            ctx.fillStyle = '#d4af37';
+            ctx.font = 'bold 16px Tahoma';
+            ctx.textAlign = 'center';
+            ctx.fillText('🏰 حصار دژ مقدس', canvas.width / 2, canvas.height - 45);
+
+            // ترسیم تیرها
+            ctx.fillStyle = '#d4af37';
+            projectiles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            // ترسیم دشمنان
+            enemies.forEach(en => {
+                ctx.fillStyle = '#b33939';
+                ctx.beginPath();
+                ctx.arc(en.x, en.y, en.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.strokeStyle = '#d4af37';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // نوار جان دشمن
+                ctx.fillStyle = '#000';
+                ctx.fillRect(en.x - 20, en.y - 28, 40, 6);
+                ctx.fillStyle = '#2ecc71';
+                ctx.fillRect(en.x - 20, en.y - 28, 40 * (en.hp / en.maxHp), 6);
+            });
+        }
+
+        function loop() {
+            update();
+            draw();
+            if (gameState.isPlaying) requestAnimationFrame(loop);
+        }
+    </script>
+</body>
+</html>
